@@ -57,6 +57,7 @@ public class ArrayTransferService extends IntentService {
                     sendBroadcast(response);
                 }
             } catch (IOException e) {
+                e.printStackTrace();
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

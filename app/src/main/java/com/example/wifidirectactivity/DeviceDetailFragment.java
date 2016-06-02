@@ -77,6 +77,8 @@ public class DeviceDetailFragment extends Fragment implements
     ArrayList<Integer> selectedAudioList = new ArrayList<Integer>();
     ArrayList<String> selectedAudioNameList = new ArrayList<String>();
 
+    private ServerSocket serverNameSocket;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -156,6 +158,11 @@ public class DeviceDetailFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().unregisterReceiver(serviceReceiver);
+        try {
+            if (serverNameSocket != null) serverNameSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendAudioNameList() {
@@ -263,8 +270,6 @@ public class DeviceDetailFragment extends Fragment implements
         private TextView statusText;
         private String[] nItems;
         ArrayList<String> recvMd5List;
-
-        private ServerSocket serverNameSocket;
 
         private ObjectInputStream ois;
         private ObjectOutputStream oos;
@@ -432,13 +437,13 @@ public class DeviceDetailFragment extends Fragment implements
 
         @Override
         protected void onPostExecute(String result) {
-            if ("success".equals(result)) {
-                Toast.makeText(getActivity(), "下载完成", Toast.LENGTH_SHORT).show();
-            } else if ("fail".equals(result)){
-                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-            }
             getFiles(Environment.getExternalStorageDirectory().getPath());
             new TitleServerAsyncTask(getActivity(), mContentView.findViewById(R.id.select_status_text)).execute();
+            if ("success".equals(result)) {
+                Toast.makeText(getActivity(), "下载完成", Toast.LENGTH_SHORT).show();
+            } else if ("fail".equals(result)) {
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
