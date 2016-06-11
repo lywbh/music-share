@@ -19,3 +19,13 @@ Android SDK版本15以上
 打开Android Studio，点击Import project，导入该目录
 
 根据提示安装相应的依赖就行了，如果连不上google需要使用VPN
+
+# 程序结构
+
+res文件夹里是资源文件
+
+程序入口为MainActivity，由MainActivity启动WifiDirectActivity
+
+WifiDirectActivity里有两个Fragment，分别是DeviceListFragment和DeviceDetailFragment
+
+两个Service是用于文件发送的，一个广播接收器，接收API发出的广播
